@@ -1,0 +1,9 @@
+
+img{
+    width: 100%;
+}
+.carousel-caption h1{
+    color: orange;
+    text-shadow: white 3px 3px;
+    padding-bottom: 500px;
+}

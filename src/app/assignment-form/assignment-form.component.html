@@ -1,0 +1,80 @@
+<section @slideInAnimation>
+<ol class="breadcrumb">
+    <li><a routerLink="/home">Home</a></li>
+    <li><a routerLink="/assignment">Assignments</a></li>
+    <li class="active">Manage Assignment</li>
+</ol>
+
+<br/>
+
+<a class="btn btn-primary" routerLink="/assignment">Return to Assignments</a>
+
+<h1>Manage Assignment</h1>
+
+<div [ngClass]="(errorMessage)?'alert alert-danger':'alert alert-success'" role="alert" *ngIf="errorMessage || successMessage">
+    {{errorMessage}} {{successMessage}}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<form (ngSubmit)="saveAssignment(assignment.assignment_id)"  #assignmentForm="ngForm" class="form-horizontal">
+  <input [(ngModel)]="assignment.assignment_id" type="hidden" name="assignment_id">
+
+  <div class="form-group">
+    <label for="student_id" class="col-sm-2 control-label">Student</label>
+    <div class="col-sm-10">
+      <select [compareWith]="byStudentId" [(ngModel)]="assignment.student_id" id="assignment.student_id" name="student_id" class="selectpicker" required>
+        <option [ngValue]='null'></option>
+        <option *ngFor="let student of students" [ngValue]="student">
+            {{student.first_name}} {{student.last_name}}
+        </option>
+    </select>
+    <span *ngIf="formErrors.student_id" class="text-danger">
+            {{ formErrors.student_id }}
+    </span>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="assignment_nbr" class="col-sm-2 control-label">Assignment Number</label>
+    <div class="col-sm-10">
+      <input [(ngModel)]="assignment.assignment_nbr" type="text" class="form-control" id="assignment_nbr" name="assignment_nbr" placeholder="Assignment Number" required minlength="2">
+      <span *ngIf="formErrors.assignment_nbr" class="text-danger">
+            {{ formErrors.assignment_nbr }}
+      </span>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="grade_id" class="col-sm-2 control-label">Grade</label>
+    <div class="col-sm-10">
+      <select [compareWith]="byGradeId" [(ngModel)]="assignment.grade_id" id="assignment.grade_id" name="grade_id" class="selectpicker">
+        <option [ngValue]='null'></option>
+        <option *ngFor="let grade of grades" [ngValue]="grade">
+            {{grade.grade}}
+        </option>
+    </select>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="class_id" class="col-sm-2 control-label">Class</label>
+    <div class="col-sm-10">
+      <select [compareWith]="byClassId" [(ngModel)]="assignment.class_id" id="assignment.class_id" name="class_id" class="selectpicker">
+        <option *ngFor="let class of classes" [ngValue]="class">
+            {{class.subject}} {{class.course}}
+        </option>
+    </select>
+    </div>
+  </div>
+  
+
+   <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button [disabled]="!assignmentForm.form.valid" type="submit" class="btn btn-primary">Submit</button>
+    </div>
+  </div>
+</form>
+</section>
+

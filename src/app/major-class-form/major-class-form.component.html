@@ -1,0 +1,55 @@
+<section @slideInAnimation>
+<ol class="breadcrumb">
+    <li><a routerLink="/home">Home</a></li>
+    <li><a routerLink="/major-class">Major Classes</a></li>
+    <li class="active">Manage Major Class</li>
+</ol>
+
+<br/>
+
+<a class="btn btn-primary" routerLink="/major-class">Return to Major Classes</a>
+
+<h1>Manage Major Class</h1>
+
+<div [ngClass]="(errorMessage)?'alert alert-danger':'alert alert-success'" role="alert" *ngIf="errorMessage || successMessage">
+    {{errorMessage}} {{successMessage}}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<form (ngSubmit)="saveMajorClass(major_class.major_class_id)"  #majorClassForm="ngForm" class="form-horizontal">
+  <input [(ngModel)]="major_class.major_class_id" type="hidden" name="major_class_id">
+  <div class="form-group">
+    <label for="first_name" class="col-sm-2 control-label">Major</label>
+    <div class="col-sm-10">
+    <select [compareWith]="byMajorId" [(ngModel)]="major_class.major_id" id="major_class.major_id" name="major_id" class="selectpicker" required>
+        <option *ngFor="let major of majors" [ngValue]="major">
+            {{major.major}}
+        </option>
+    </select>
+     <span *ngIf="formErrors.major_id" class="text-danger">
+          {{ formErrors.major_id }}
+    </span>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="first_name" class="col-sm-2 control-label">Class</label>
+    <div class="col-sm-10">
+      <select [compareWith]="byClassId" [(ngModel)]="major_class.class_id" id="major_class.class_id" name="class_id" class="selectpicker" required>
+        <option *ngFor="let class of classes" [ngValue]="class">
+            {{class.subject}} {{class.course}}
+        </option>
+    </select>
+    <span *ngIf="formErrors.class_id" class="text-danger">
+          {{ formErrors.class_id }}
+    </span>
+    </div>
+  </div>
+   <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button [disabled]="!majorClassForm.form.valid" type="submit" class="btn btn-primary">Submit</button>
+    </div>
+  </div>
+</form>
+</section>
